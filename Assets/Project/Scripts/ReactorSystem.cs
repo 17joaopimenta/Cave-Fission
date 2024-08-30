@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class ReactorSystem : MonoBehaviour
 {
-    float reactorTemp;
-    int controlRods;
-    bool controlPump1, controlPump2;
-    float powerConsumption;
-
+    public float reactorTemp;
+    public int controlRods;
+    public bool controlPump1, controlPump2;
+    public float powerProduction;
+    public static ReactorSystem instance;
     private void Start()
     {
         StartCoroutine(ReactorUpdate());
