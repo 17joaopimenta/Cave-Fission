@@ -18,7 +18,7 @@ public class InteractPanel : InteractiveSystem
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                print("funcionou");
+                panel.SetActive(true);
             }
         }
     }
@@ -27,7 +27,7 @@ public class InteractPanel : InteractiveSystem
     {
         if (!_other.CompareTag("Player")) return;
         HighlightObject();
-
+        panel.SetActive(false);
 
     }
 

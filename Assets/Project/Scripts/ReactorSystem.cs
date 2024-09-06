@@ -9,11 +9,57 @@ public class ReactorSystem : MonoBehaviour
     public bool controlPump1, controlPump2;
     public float powerProduction;
     public static ReactorSystem instance;
-    private void Start()
+    bool rodsMoving = false;
+    private void Awake()
     {
+        instance = this;
         StartCoroutine(ReactorUpdate());
     }
 
+    public void ScramReactor()
+    {
+
+    }
+
+    public void LiftRods()
+    {
+        //ergue as control rods (diminui a porcentagem)
+        if (rodsMoving || ReactorSystem.instance.controlRods <= 10) return;
+        StartCoroutine(MoveRods(true));
+    }
+
+    public void LowerRods()
+    {
+        //abaixa as control rods (aumenta a porcentagem)
+        if (rodsMoving || ReactorSystem.instance.controlRods >= 100) return;
+        StartCoroutine(MoveRods(false));
+    }
+
+    IEnumerator MoveRods(bool lift)
+    {
+        if (!rodsMoving)
+        {
+            rodsMoving = true;
+            for (int i = 0; i < 10; i++)
+            {
+                if (lift)
+                {
+                    ReactorSystem.instance.controlRods -= 1;
+                    //efeito sonoro
+                }
+                else
+                {
+                    ReactorSystem.instance.controlRods += 1;
+                    //efeito sonoro
+                }
+                yield return new WaitForSeconds(1);
+
+            }
+            rodsMoving = false;
+        }
+
+        yield return null;
+    }
 
     IEnumerator ReactorUpdate()
     {
@@ -22,11 +68,11 @@ public class ReactorSystem : MonoBehaviour
             float increaseTemp = (10f / controlRods);
             if (controlPump1 == true)
             {
-                increaseTemp++;
+                increaseTemp--;
             }
             if (controlPump2 == true)
             {
-                increaseTemp++;
+                increaseTemp--;
             }
             reactorTemp += increaseTemp;
             yield return new WaitForSeconds(1);

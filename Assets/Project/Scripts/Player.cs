@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     bool jumping;
     public float playerSpeed;
     public float jumpPower;
+    [SerializeField] LayerMask ground;
     private void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
@@ -40,12 +41,17 @@ public class Player : MonoBehaviour
         }
     }
 
+    bool IsOnGround()
+    {
+        return Physics2D.OverlapCircle(transform.position, 1.05f, ground );
+    }
+
     void PlayerInputs()
     {
-        if (Input.GetButtonDown("Jump")) 
+        if (Input.GetButtonDown("Jump") && IsOnGround()) 
         {
             jumping = true;
         }
-        if
+        
     }
 }

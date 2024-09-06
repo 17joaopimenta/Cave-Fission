@@ -5,24 +5,12 @@ using TMPro;
 public class ReactorPanel : MonoBehaviour
 {
     [SerializeField] TMP_Text tempDisplay, rodsDisplay, feed1Status, feed2Status, pump1Status, pump2Status, powerProd;
- 
-    void LiftRods()
-    {
-        //ergue as control rods
-        ReactorSystem.instance.controlRods -= 10;
-    }
 
-    void LowerRods()
+    private void Update()
     {
-        //abaixa as control rods
-        ReactorSystem.instance.controlRods += 10;
+        DisplayUpdate();
     }
-
-    void Scram()
-    {
-        //ativa os sistemas de segurança do reator
-        //objetivo encerrar a reação do reator
-    }
+   
 
     void DisplayUpdate()
     {
