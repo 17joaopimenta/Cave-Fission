@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using TMPro;
 
 public class MenuManager : MonoBehaviour
 {
+    //Estados do menu
     enum MenuStates
     {
         Play,
@@ -15,20 +16,32 @@ public class MenuManager : MonoBehaviour
         Saves
     }
 
+    public enum SavesStates
+    {
+        New,
+        Load,
+    }
+
+    //Variavel que armazena os estados do menu
     private MenuStates menuController = MenuStates.InitialScreen;
 
+    //Singleton do MenuManager 
     public static MenuManager instance;
 
+    //Variavel para fazer a tratativa do menu
     private string armLastName;
+   
+    //Armazenar o nome do botao para saber em que menu ele esta
     [HideInInspector] public string armBtnName;
 
+    //Armazenar as telas que serao usadas
     [SerializeField] GameObject[] screens;
 
-    //Save and load buttons
-    [SerializeField] Sprite[] buttonStates;
+    [SerializeField] TextMeshProUGUI title;
 
     private void Awake()
     {
+        //Setar o singleton
         instance = this;
     }
 
@@ -36,14 +49,17 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu();
         DisableMenu();
-        Debug.Log("Botao apertado : "+armBtnName);
     }
 
+    /*Regiao criada para selecionar as funcoes de 
+      mostrar e desabilitar o menu*/
     #region ShowDisableMenu
     private void ShowMenu()
     {
         armLastName = menuController.ToString();
         
+        title.text = armBtnName;
+
         screens[(int)menuController].SetActive(true);
         
         Debug.Log(armLastName);
