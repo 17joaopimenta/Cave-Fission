@@ -16,12 +16,14 @@ public class SaveBtn : MonoBehaviour
 
     private Image saveRender;
     [SerializeField] Sprite[] saveImg;
-    private string savePath, saveTxt;
+    private string savePath;
+    private const string saveTxt = "gameSave";
 
     private void Awake()
     {
-        saveTxt = gameObject.name + " : is Saved";
-        savePath = PlayerPrefs.GetString(saveTxt);
+        /*saveTxt = gameObject.name + " : is Saved";*/
+        string _saveTxt = "Save :" + gameObject.name;
+        savePath = PlayerPrefs.GetString(_saveTxt);
         saveRender = GetComponent<Image>();
     }
 
@@ -34,7 +36,8 @@ public class SaveBtn : MonoBehaviour
     {
         Debug.Log("Texto da mensagem que eu quero : "+saveTxt);
         
-        if (savePath != saveTxt) 
+        string _armText = saveTxt + gameObject.name;
+        if (savePath != _armText) 
             status = SaveStatus.Empty;        
         
         else status = SaveStatus.Fill;
@@ -42,16 +45,19 @@ public class SaveBtn : MonoBehaviour
 
     public void SetSave()
     {
-        if (savePath != saveTxt)
+        string _armText = saveTxt + gameObject.name;
+        if (savePath != _armText)
         {
+            if (MenuManager.instance.armBtnName == "Carregar Jogo") return;
+
             CreateNewSave();
         }
-        else 
-        { 
-            if (MenuManager.instance.armBtnName == "Carregar Jogo") SceneManager.LoadScene("Usine"); 
+        else
+        {
+            if (MenuManager.instance.armBtnName == "Carregar Jogo") SceneManager.LoadScene("Stage1");
             else DeleteSave();
         }
-        Debug.Log(savePath);
+        Debug.Log("Caminho do save : "+savePath);
     }
 
     void DeleteSave()
@@ -61,8 +67,12 @@ public class SaveBtn : MonoBehaviour
 
     void CreateNewSave()
     {
-        PlayerPrefs.SetString(saveTxt, "saveTxt");
-        SceneManager.LoadScene("Usine");
+        string _armText = saveTxt + gameObject.name;
+        string _saveTxt = "Save :" + gameObject.name;
+
+        PlayerPrefs.SetString(_saveTxt, _armText);
+
+        SceneManager.LoadScene("Stage1");
     }
 
     void ImageSet()

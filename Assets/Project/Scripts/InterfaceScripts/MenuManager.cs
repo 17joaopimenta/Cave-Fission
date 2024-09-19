@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using Unity.VisualScripting;
 
 public class MenuManager : MonoBehaviour
 {
@@ -16,14 +17,18 @@ public class MenuManager : MonoBehaviour
         Saves
     }
 
-    public enum SavesStates
+    enum ConfigStates
     {
-        New,
-        Load,
+        Audio,
+        Controlls,
+        Graphics
     }
 
     //Variavel que armazena os estados do menu
     private MenuStates menuController = MenuStates.InitialScreen;
+
+    //Variavel para gerenciamento dos menus de configuracao
+    private ConfigStates configStates = ConfigStates.Audio;
 
     //Singleton do MenuManager 
     public static MenuManager instance;
@@ -49,6 +54,7 @@ public class MenuManager : MonoBehaviour
     {
         ShowMenu();
         DisableMenu();
+        ConfigMenu();
     }
 
     /*Regiao criada para selecionar as funcoes de 
@@ -108,5 +114,44 @@ public class MenuManager : MonoBehaviour
     {
         menuController = MenuStates.Saves;
     }
+    #endregion
+
+    #region ConfigMenu
+
+    private void ConfigMenu()
+    {
+        if (menuController != MenuStates.Config) return; 
+
+        switch (configStates)
+        {
+            case ConfigStates.Audio:
+                Debug.Log("Audios");
+                break;
+
+            case ConfigStates.Controlls:
+                Debug.Log("Controles");
+                break;
+
+            case ConfigStates.Graphics:
+                Debug.Log("Gráficos");
+                break;
+        }
+    }
+
+    public void GoToAudio()
+    {
+        configStates = ConfigStates.Audio;
+    }
+
+    public void GoToKey()
+    {
+        configStates = ConfigStates.Controlls;
+    }
+
+    public void GoToGraphics()
+    {
+        configStates = ConfigStates.Graphics;
+    }
+
     #endregion
 }
