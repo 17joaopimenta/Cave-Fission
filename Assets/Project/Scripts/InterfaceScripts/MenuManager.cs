@@ -33,14 +33,19 @@ public class MenuManager : MonoBehaviour
     //Singleton do MenuManager 
     public static MenuManager instance;
 
-    //Variavel para fazer a tratativa do menu
-    private string armLastName;
    
     //Armazenar o nome do botao para saber em que menu ele esta
     [HideInInspector] public string armBtnName;
 
+    //Variavel para fazer a tratativa do menu
+    //private string armLastName;
     //Armazenar as telas que serao usadas
     [SerializeField] GameObject[] screens;
+
+    //Variavel para fazer a tratativa das janelas de configuracao
+    //private string armTabName;
+    //Armazenar os estados do menu
+    [SerializeField] GameObject[] configTabs;
 
     [SerializeField] TextMeshProUGUI title;
 
@@ -52,33 +57,19 @@ public class MenuManager : MonoBehaviour
 
     private void Update()
     {
-        ShowMenu();
-        DisableMenu();
+        Menu();
         ConfigMenu();
     }
 
     /*Regiao criada para selecionar as funcoes de 
       mostrar e desabilitar o menu*/
     #region ShowDisableMenu
-    private void ShowMenu()
-    {
-        armLastName = menuController.ToString();
-        
+    private void Menu()
+    {        
         title.text = armBtnName;
 
         screens[(int)menuController].SetActive(true);
-        
-        Debug.Log(armLastName);
-    }
-
-    private void DisableMenu()
-    {
-        foreach (var screen in screens)
-        {
-            if (screen.name != armLastName) screen.SetActive(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape)) Back();
+        Disabler((int)menuController, screens);    
     }
     #endregion
 
@@ -120,22 +111,21 @@ public class MenuManager : MonoBehaviour
 
     private void ConfigMenu()
     {
-        if (menuController != MenuStates.Config) return; 
+        if (menuController != MenuStates.Config) return;
 
-        switch (configStates)
+        configTabs[(int)configStates].SetActive(true);
+        Disabler((int)configStates, configTabs);
+    }
+
+    private void Disabler(int index, GameObject[] screns)
+    {
+        for (int i = 0; i < screns.Length; i++)
         {
-            case ConfigStates.Audio:
-                Debug.Log("Audios");
-                break;
-
-            case ConfigStates.Controlls:
-                Debug.Log("Controles");
-                break;
-
-            case ConfigStates.Graphics:
-                Debug.Log("Gráficos");
-                break;
+            if (i == index) continue;           
+            screns[i].SetActive(false);
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape)) Back();
     }
 
     public void GoToAudio()
